@@ -1,0 +1,52 @@
+{% extends "poll/base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+
+{% block main %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+		<div id="message">{{finished_text}}</div>
+		<div style="height:20px;"></div>
+		<script>
+			close = document.getElementById("message");
+			close.addEventListener('click', function() {
+			  note = document.getElementById("message");
+			  note.style.display = 'none';
+			}, false);
+		</script>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Available Polls</h3>
+            </div>
+			<ul class="list-group">
+				{% for poll in polls %}
+				<li class="list-group-item btn-menu-option" onClick="location.href='{% url 'vote' poll.id %}'">
+					<strong>{{ poll.question }}</strong>
+					<span class="pull-right">
+						<a href="{% url 'vote' poll.id %}" class="btn btn-info btn-xs">View</a> &nbsp;
+						<!-- <a href="{% url 'results' poll.id %}" class="btn btn-default btn-xs">View Results</a> &nbsp; -->
+					</span>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<!-- Quizes list -->
+		<div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Available Quizes</h3>
+            </div>
+			<ul class="list-group">
+				{% for quiz in quizes %}
+				<li class="list-group-item btn-menu-option" onClick="location.href='{% url 'quiz' quiz.id %}'">
+					<strong>{{ quiz.name }}</strong>
+					<span class="pull-right">
+						<a href="{% url 'quiz' quiz.id %}" class="btn btn-info btn-xs">View</a> &nbsp;
+					</span>
+				</li>
+				{% endfor %}
+			</ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

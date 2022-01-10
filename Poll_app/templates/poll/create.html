@@ -1,0 +1,307 @@
+{% extends "poll/base.html" %}
+{% load widget_tweaks %}
+{% block title %}Create Poll{% endblock %}
+
+{% block main %}
+<div class="row">
+	<!-- Poll --> 
+	<div class="col-lg-4 col-lg-offset-2">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Create A New Poll</h3>
+			</div>
+			
+			<form method="POST" class="poll">
+				{% csrf_token %}
+				<div class="panel-body">
+					<div row class="row col-lg-12">
+						<div class="form-group">
+							{% render_field form_poll.question rows="3" class="poll_textbox poll_longbox" %}
+						</div>
+					</div>
+
+					<div class="row col-lg-12">
+						<div class="form-group">
+							{% render_field form_poll.option_one class="poll_textbox" %}
+							<hr class="break-line">
+						</div>
+					</div>
+
+					<div class="row col-lg-12">
+						<div class="form-group">
+							{% render_field form_poll.option_two class="poll_textbox" %}
+							<hr class="break-line">
+						</div>
+					</div>
+					
+					<div class="row col-lg-12">
+						<div class="form-group">
+							{% render_field form_poll.option_three class="poll_textbox" %}
+							<hr class="break-line">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-4">
+							<button type="submit" name="poll_submit" class="btn btn-info poll_button">Submit</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- Quiz --> 
+	<div class="col-lg-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Create A New Quiz</h3>
+			</div>
+
+			<div class="poll">
+				<div class="panel-body">
+					<div id ="formHolder">	
+						<form method="POST" name="quiz_form" class="quiz_form">
+							<div class="row col-lg-12">
+								<div class="form-group">
+									{% csrf_token %}
+									{% render_field form_quiz.name class="poll_textbox" %}
+									<hr class="break-line">
+								</div>
+								<input type="hidden" name="quiz_submit">
+							</div>
+
+						</form>
+
+						<div class="row col-lg-12" style="height:2px!important;">
+							<hr class="break-line-fill">
+						</div>
+
+						<!-- Polls title tabs -->
+						<div class="row col-lg-12">
+							<div class="tab">
+								<button class="tablinks active" onclick="changeQuizPollTab(event, this)">Question 1</button>
+							</div>
+						</div>
+
+						<!-- Form to copy-->
+						<form method="POST" name="quiz_poll_form" id="Question 1" style="padding-top: 10px;" class="quiz_poll_form">
+							{% csrf_token %}
+
+							<!-- <input type="hidden" name="quiz_id" value="{{form_quiz_id}}"> -->
+							<!-- Question text-->
+							<div row class="row col-lg-12" style="margin-top: 10px;">
+								<div class="form-group">
+									{% render_field form_poll.question rows="3" class="poll_textbox poll_longbox" %}
+								</div>
+							</div>
+							<!-- A1 -->
+							<div class="row col-lg-12">
+								<div class="form-group">
+									{% render_field form_poll.option_one class="poll_textbox" %}
+									<hr class="break-line">
+								</div>
+							</div>
+							<!-- A2 -->
+							<div class="row col-lg-12">
+								<div class="form-group">
+									{% render_field form_poll.option_two class="poll_textbox" %}
+									<hr class="break-line">
+								</div>
+							</div>
+							<!-- A3 -->
+							<div class="row col-lg-12">
+								<div class="form-group">
+									{% render_field form_poll.option_three class="poll_textbox" %}
+									<hr class="break-line">
+								</div>
+							</div>
+							<input type="hidden" name="poll_submit">
+						</form>	
+
+
+					</div>
+					<!-- Buttons at the bottom-->
+					<div class="row col-lg-12" style="padding-right: 20px;">
+						<div class="col-lg-3">
+							<button type="button" name="quiz_submit_all" id="quiz_submit_all" class="btn btn-info poll_button">Submit</button>
+						</div>
+						<div class="col-lg-2"></div>
+						<div class="col-lg-4">
+							<button type="button" name="add_poll_btn" id="add_poll_btn" class="btn btn-info quiz_modif_button">+ Question</button>
+						</div>
+						<div class="col-lg-3">
+							<button type="button" name="rem_poll_btn" id="rem_poll_btn" class="btn btn-info quiz_modif_button disabled noHover">- Question</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				$("#quiz_submit_all").click(function(){
+					if( $("#formHolder").find("input,textarea").filter(function(){return $.trim($(this).val()).length==0}).length!=(1+poll_counter)){
+						alert("Please fill all the quiz options");
+						return;
+					}
+					const url = window.location.href;
+					var quiz_id="";
+					var cont = true;
+					const quiz_data =  $(".quiz_form").serialize();
+					$.ajax({
+						type: 'POST',
+						url: url,
+						data: quiz_data,
+						async: false,
+						success: function(response){
+							console.log("Quiz received: " + response["Received"]);
+							quiz_id = response["quiz_id"];
+						},
+						error: function(response){
+							alert(response["error"]);
+							cont = false;
+						}
+					});
+					if(!cont) return;
+					// Split the serialized array into the poll questions
+					var quiz_all_poll_data =  $(".quiz_poll_form").serializeArray();
+					for(var i=0; i< quiz_all_poll_data.length/6; i++){
+						var poll = [];
+						for(var j=0; j < 6; j++) 
+							poll.push(quiz_all_poll_data[i*6+j]);
+						$.ajax({
+						type: 'POST',
+						url: url,
+						data: poll,
+						async: false,
+						success: function(response){
+							console.log("Poll received: " + response["Received"]);
+						},
+						error: function(response){
+							alert(response["error"]);
+							cont = false;
+						}
+						});
+					}
+					if(!cont) return;
+					// Redirect request
+					window.location.href = "/quiz/"+quiz_id;
+				});
+
+				var poll_counter=1;
+				// Event for add poll
+				$("#add_poll_btn").click(function(){
+					var formHolder = document.getElementById("formHolder");
+					var tab_holder = formHolder.childNodes[7];
+					// Copy the <li> element and its child nodes
+					poll_counter++;
+					console.log(formHolder.childNodes);
+					var cln = formHolder.childNodes[11].cloneNode(true);
+					cln.id = "Question " + poll_counter;
+					cln.reset();
+
+					// Make all tabs inactive
+					var tablinks = document.getElementsByClassName("tablinks");
+					for (j = 0; j < tablinks.length; j++) {
+						tablinks[j].className = tablinks[j].className.replace(" active", "");
+					}
+
+					// Add the new the tab button
+					var cln_tab = formHolder.childNodes[7].childNodes[1].childNodes[1].cloneNode(true);
+					while(cln_tab.nodeType == Node.TEXT_NODE){
+						formHolder.childNodes[7].childNodes[1].childNodes[1].remove();
+						cln_tab = formHolder.childNodes[7].childNodes[1].childNodes[1].cloneNode(true);
+					}
+					var cln_tab = formHolder.childNodes[7].childNodes[1].childNodes[1].cloneNode(true);
+					cln_tab.textContent = "Question " + poll_counter;
+					cln_tab.className += " active";
+					tab_holder.childNodes[1].appendChild(cln_tab);
+
+					// Append the cloned <li> element to <ul> with id="myList1"
+					document.getElementById("formHolder").appendChild(cln);
+
+					// Set the new tab to be the current one
+					tabcontent = document.getElementsByClassName("quiz_poll_form");
+					for (j = 0; j < tabcontent.length; j++) {
+						tabcontent[j].style.display = "none";
+					}
+					document.getElementById("Question " + poll_counter).style.display = "block";
+
+					// If there are more than one poll activate the remove button
+					if(poll_counter>1){
+						var el = document.getElementById("rem_poll_btn");
+						el.className = el.className.replace(" disabled noHover","");
+					}
+					console.log(poll_counter);
+				})
+				
+				// Event for remove poll
+				$("#rem_poll_btn").click(function(){
+					// Look for active tab and remove it
+					var active_tab, active_tab_id, j;
+					var tablinks = document.getElementsByClassName("tablinks");
+					for (j = 0; j < tablinks.length; j++) {
+						if(tablinks[j].className.includes(" active") && poll_counter!=1){
+							active_tab=tablinks[j].textContent;
+							active_tab_id=j;
+						}
+					}
+					tablinks[active_tab_id].remove();
+
+					// Look for active tab content and remove it
+					if(document.getElementById("Question " + (active_tab_id+1)).previousSibling.nodeType == Node.TEXT_NODE &&
+						(document.getElementById("Question " + (active_tab_id+1)).previousSibling.previousSibling.nodeType != Node.COMMENT_NODE ||
+						document.getElementById("Question " + (active_tab_id+1)).nextSibling.nodeType == Node.TEXT_NODE)){
+						document.getElementById("Question " + (active_tab_id+1)).previousSibling.remove();	// text node
+					}
+					document.getElementById("Question " + (active_tab_id+1)).remove();
+
+					// Remap the questions
+					tabs = document.getElementsByClassName("tablinks");
+					for(j=0; j<tabs.length; j++){
+						tabs[j].textContent = "Question " + (j+1); 
+					}
+					tabContent = document.getElementsByClassName("quiz_poll_form");
+					for(j=0; j<tabContent.length; j++){
+						tabContent[j].id = "Question " + (j+1); 
+					}
+
+					// Set as active the first one
+					tablinks = document.getElementsByClassName("tablinks");
+					tablinks[0].className+=" active";
+					document.getElementById("Question " + 1).style.display = "block";
+
+					poll_counter--;
+					console.log(poll_counter);
+					// Disable the remove button
+					if(poll_counter<2){
+						document.getElementById("rem_poll_btn").className+=" disabled noHover";
+					}
+
+				});
+
+				// Event for tab clicks
+				function changeQuizPollTab(event, context){
+					// Declare all variables
+					var j, tabcontent, tablinks;
+
+					// Get all elements with class="tabcontent" and hide them
+					tabcontent = document.getElementsByClassName("quiz_poll_form");
+					for (j = 0; j < tabcontent.length; j++) {
+						tabcontent[j].style.display = "none";
+					}
+
+					// Get all elements with class="tablinks" and remove the class "active"
+					tablinks = document.getElementsByClassName("tablinks");
+					for (j = 0; j < tablinks.length; j++) {
+						tablinks[j].className = tablinks[j].className.replace(" active", "");
+					}
+
+					// Show the current tab, and add an "active" class to the button that opened the tab
+					document.getElementById(context.textContent).style.display = "block";
+					event.currentTarget.className += " active";
+				}
+				
+
+			</script>
+		</div>
+	</div>
+</div>
+{% endblock %}

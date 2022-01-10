@@ -1,0 +1,315 @@
+a.navbar-brand, .panel-title {
+  font-weight: bolder;
+}
+
+
+.poll {
+  width: 100%;
+  position: relative;
+  margin: 0 auto;
+  background-color: #ffd756;
+  font-size: 14px;
+  font-family: Patrick Hand, sans-serif;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+}
+
+.poll::before{
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 25px;
+  bottom: 0;
+  height: -webkit-fill-available;
+  width: 8px;
+  border: 2px solid #ca302c;
+  border-width: 0 2px;
+  z-index: 100;
+}
+.poll > * {
+  padding-left: 50px;
+}
+
+.poll_button{
+  border-color: #ca302c;
+  background-color: #ca302c;
+  font-family: Patrick Hand, sans-serif;
+  font-size: 14px;
+  outline: none !important;
+  border-width: 0px !important;
+}
+
+.break-line{
+  border-top: 1px solid #ca302c;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.break-line-fill{
+  position:absolute;
+  left: -35px;
+  right: 0;
+  margin: 0 auto;
+  border-top: 2px solid #ca302c;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.poll-title{
+  font-family: Patrick Hand, sans-serif;
+  font-weight: bolder;
+  font-size: 14px;
+}
+
+ /* Style the tab */
+ .tab {
+  overflow: hidden;
+  border-bottom: 1px solid #f0b700;
+  background-color: #ffd756;
+  margin-top: 10px;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 2px 7px;
+  transition: 0.3s;
+}
+
+.tab button:not(:last-child){
+  border-right: 1px solid #f0b700;
+  border-radius: 0;    
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover:not([disabled]) {
+  background-color: #f0b700;
+}
+
+/* Create an active/current tablink class */
+.tab button.active:not([disabled]) {
+  background-color: #f0b700;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid  #f0b700;
+  border-top: none;
+  animation: fadeEffect 0.5s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.quiz_modif_button{
+  border-color: #ca302c;
+  background-color: #ca302c;
+  font-family: Patrick Hand, sans-serif;
+  font-size: 10px;
+  outline: none !important;
+  border-width: 0px !important;
+}
+
+.noHover{
+  pointer-events: none;
+  background-color: #ca302c;
+}
+
+/* The alert message box */
+.alert {
+  padding: 10px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 5px;
+  opacity: 1;
+  transition: opacity 2s;
+}
+
+.alert-success {
+  padding: 10px;
+  display: none;
+  background-color: #4CAF50; /* Red */
+  color: white;
+  margin-bottom: 5px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+
+
+.body-new{
+background-color: #121212;
+color: rgb(220, 220, 220);
+}
+
+.navbar-default, .btn, .form-control, .panel {
+  border-radius: 0;
+  background-color: #252525;
+}
+.navbar-default {
+  /* background-color: rgba(245, 245, 220, .7); */
+  background-color: #292929;
+  border-color:#323232;
+  box-shadow: 0px 3px 3px 0px #070707;
+}
+
+.panel-default > .panel-heading {
+  color: #333;
+  /* background-color: rgba(245, 245, 220, .7); */
+  background-color:  #ffd756;
+  /* border-color: rgba(245, 245, 220, .6);*/
+  border-color: #ca302c;
+  border-width: 2px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0; 
+}
+.panel-footer {
+  background-color: #252525;;
+  border-color: rgba(245, 245, 220, .4);
+}
+.panel {
+  box-shadow: 0px 5px 5px 0px black;
+  border-color:#323232;
+}
+
+.navbar-default .navbar-nav>li>a, .navbar-default .navbar-brand {
+color: #cbd5db;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-brand:hover{
+color: #ffd756;
+}
+
+.poll_textbox{
+background-color: #ffd756;
+resize: vertical;
+outline: none;
+width: -webkit-fill-available;
+border-color: #ca302c;
+border-width: 0px;
+color: #252525;
+}
+
+.poll_longbox{
+border-width: 1px !important;
+color: #252525;
+}
+
+.btn-info{
+background-color: #ca302c;
+border-color: #ca302c;
+}
+
+.btn-info:hover {
+color: #fff;
+background-color: #30475e;
+border-color: #30475e;
+}
+
+.btn-info.active, .btn-info:active, .open>.dropdown-toggle.btn-info {
+color: #fff;
+background-color: #30475e;
+border-color: #30475e;
+}
+.btn-info.active.focus, .btn-info.active:focus, .btn-info.active:hover, .btn-info:active.focus, .btn-info:active:focus, .btn-info:active:hover, .open>.dropdown-toggle.btn-info.focus, .open>.dropdown-toggle.btn-info:focus, .open>.dropdown-toggle.btn-info:hover {
+color: #fff;
+background-color: #30475e;
+border-color: #233344;
+}
+.btn-info.disabled.focus, .btn-info.disabled:focus, .btn-info.disabled:hover, .btn-info[disabled].focus, .btn-info[disabled]:focus, .btn-info[disabled]:hover, fieldset[disabled] .btn-info.focus, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:hover {
+background-color: #30475e;
+border-color: #233344;
+}
+.btn-info.focus, .btn-info:focus {
+color: #fff;
+background-color: #30475e;
+border-color: #233344;
+}
+
+.btn-default{
+background-color: #ffffff;
+}
+
+
+
+.btn-menu-option{
+  background-color: #323232;
+  border-color: #252525;
+  }
+  
+.btn-menu-option:hover {
+color: #fff;
+background-color:#272727;
+border-color: #252525;
+}
+  
+.btn-menu-option.active, .btn-menu-option:active, .open>.dropdown-toggle.btn-menu-option {
+color: #fff;
+background-color: #272727;
+border-color: #252525;
+}
+.btn-menu-option.active.focus, .btn-menu-option.active:focus, .option-info.active:hover, .btn-menu-option:active.focus, .btn-menu-option:active:focus, .btn-menu-option:active:hover, .open>.dropdown-toggle.btn-menu-option.focus, .open>.dropdown-toggle.option-info:focus, .open>.dropdown-toggle.btn-menu-option:hover {
+color: #fff;
+background-color: #272727;
+border-color: #252525;
+}
+.btn-menu-option.disabled.focus, .btn-menu-option.disabled:focus, .btn-menu-option.disabled:hover, .btn-menu-option[disabled].focus, .btn-menu-option[disabled]:focus, .btn-menu-option[disabled]:hover, fieldset[disabled] .btn-menu-option.focus, fieldset[disabled] .btn-menu-option:focus, fieldset[disabled] .btn-menu-option:hover {
+background-color: #272727;
+border-color: #252525;
+}
+.btn-menu-option.focus, .option-info:focus {
+color: #fff;
+background-color: #272727;
+border-color: #252525;
+}
+
+
+#message {
+left: 0;
+right: 0;
+background: #5bc0de;
+color: rgb(220, 220, 220);
+text-align: center;
+line-height: 2.5;
+overflow: hidden;
+-webkit-box-shadow: 0 0 5px #5bc0de;
+-moz-box-shadow:    0 0 5px #5bc0de;
+box-shadow:         0 0 5px #5bc0de;
+}
+
+.tablinks{
+  color:  #252525;
+}
+
+.list-group-item{
+  background-color:#323232;
+  border-color: #252525;
+  color:rgb(220, 220, 220);
+}
+legend{
+  color: rgb(220, 220, 220);
+}

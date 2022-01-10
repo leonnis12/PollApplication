@@ -1,0 +1,143 @@
+{% extends "poll/base.html" %}
+{% block title %}Quiz{% endblock %}
+
+{% block main %}
+<div class="row">
+    <!-- Do Quiz -->
+    <div class="col-lg-8 col-lg-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ quiz.name }}</h3>
+            </div>
+
+            {% for poll in object_list %}
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2>{{ poll.question }}</h2>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <hr />
+    
+                            <form method="POST" id="form" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="poll_id" value="{{poll.pk}}">
+                                <input type="hidden" name="page_id" value="{{page_obj.number}}">
+                                <input type="hidden" name="pages_nr" value="{{page_obj.paginator.num_pages}}">
+                                <div class="form-group">
+                                    <div class="radio required">
+                                        <label>
+                                            <input type="radio" name="poll" value="option1">
+                                            {{ poll.option_one }}
+                                        </label> &nbsp;
+                                        <label>
+                                            <input type="radio" name="poll" value="option2">
+                                            {{ poll.option_two }}
+                                        </label> &nbsp;
+                                        <label>
+                                            <input type="radio" name="poll" value="option3">
+                                            {{ poll.option_three }}
+                                        </label> &nbsp;
+                                    </div>
+                                </div>
+
+
+    
+                                <hr />
+
+                                {% if page_obj.has_next %}
+                                    <button type="button" id="next" class="btn btn-info">
+                                        Next
+                                    </button>
+                                    <script>
+                                        $('#next').on('click', function() {
+                                            if($('div.radio.required :radio:checked').length <= 0)
+                                                alert("Please pick an option");
+                                            else{
+                                                $('#form').submit();
+                                            }
+                                        });
+                                    </script>
+                                {% else %}
+                                    <button type="button" id="sub" class="btn btn-info">
+                                        Submit
+                                    </button>
+                                    <script>
+                                        $('#sub').on('click', function() {
+                                            if($('div.radio.required :radio:checked').length <= 0)
+                                                alert("Please pick an option");
+                                            else{
+                                                $('#form').submit();
+                                            }
+                                        });
+                                    </script>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    
+    <!-- Is disabled -->
+    {% if is_paginated  and 0%}
+        <div class="col-lg-12" style="display: flex;justify-content: center;">
+            {% if page_obj.has_previous %}
+                <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {%else %}
+                <a class="btn btn-outline-info mb-4" style="visibility: hidden;">First</a>
+                <a class="btn btn-outline-info mb-4" style="visibility: hidden;">Previous</a>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+    
+            {% if page_obj.has_next %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {%else %}
+                <a class="btn btn-outline-info mb-4" style="visibility: hidden;">Next</a>
+                <a class="btn btn-outline-info mb-4" style="visibility: hidden;">Last</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="col-lg-8" style="height: 20px;"></div>
+    
+
+    {% if user.is_authenticated and quiz.author.id == user.id or quiz.author.id == 4 %}
+    <!-- Results of quiz -->
+    <div class="col-lg-8 col-lg-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Quiz Result</h3>
+            </div>
+
+            {% for poll in polls %}
+            <li class="list-group-item">
+                <strong>{{ poll.question }}</strong>
+                <ul class="list-group">
+                    <li class="list-group-item">{{ poll.option_one }} &mdash; <strong>{{ poll.option_one_count }}</strong></li>
+                    <li class="list-group-item">{{ poll.option_two }} &mdash; <strong>{{ poll.option_two_count }}</strong></li>
+                    <li class="list-group-item">{{ poll.option_three }} &mdash; <strong>{{ poll.option_three_count }}</strong></li>
+                </ul>
+    
+            </li>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
